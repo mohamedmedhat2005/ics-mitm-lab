@@ -1,0 +1,44 @@
+services:
+  plc:
+    build:
+      context: .
+      dockerfile: plc/Dockerfile
+    networks:
+      ics_net:
+        ipv4_address: 172.20.0.10
+
+  hmi:
+    build:
+      context: .
+      dockerfile: hmi/Dockerfile
+    depends_on:
+      - plc
+    networks:
+      ics_net:
+        ipv4_address: 172.20.0.20
+
+  attacker:
+    build:
+      context: .
+      dockerfile: attacker/Dockerfile
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    networks:
+      ics_net:
+        ipv4_address: 172.20.0.30
+
+  ids:
+    build:
+      context: .
+      dockerfile: defense/Dockerfile
+    network_mode: "service:plc"
+    cap_add:
+      - NET_RAW
+
+networks:
+  ics_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
