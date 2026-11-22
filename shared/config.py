@@ -14,3 +14,7 @@ TANK_MAX_CM = 100      # tank overflows above this
 PUMP_RATE_CM = 2       # cm added per tick when pump is on
 DRAIN_RATE_CM = 1      # cm removed per tick when valve is open
 TICK_SECONDS = 1       # simulation step length
+
+# Safety interlock: a privileged channel the PLC honors above normal writes
+REG_SAFETY = 4          # 1 = safety tripped (set by the watchdog)
+SAFE_RELEASE_CM = 70    # latch releases when level drops to/below this
