@@ -1,0 +1,18 @@
+services:
+  stunnel-server:
+    build: .
+    command: stunnel /etc/stunnel/server.conf
+    volumes:
+      - ./server.conf:/etc/stunnel/server.conf:ro
+      - ./stunnel.pem:/etc/stunnel/stunnel.pem:ro
+    networks: [lab]
+  stunnel-client:
+    build: .
+    command: stunnel /etc/stunnel/client.conf
+    volumes:
+      - ./client.conf:/etc/stunnel/client.conf:ro
+    networks: [lab]
+networks:
+  lab:
+    external: true
+    name: ics-mitm-lab_ics_net
